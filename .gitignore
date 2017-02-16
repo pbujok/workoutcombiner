@@ -1,0 +1,15 @@
+/src/WebApi/obj
+/src/WebApi/bin
+/src/Domain/obj
+/src/Domain/bin
+/src/Domain.Test/obj
+/src/Domain.Test/bin
+/Api.Test/obj
+/Api.Test/bin
+/src/Api/bin
+/src/Api/obj
+/src/Api.Test/obj
+/src/Api.Test/bin
+/src/FrontEnd/bower_components
+/.vs
+/packages

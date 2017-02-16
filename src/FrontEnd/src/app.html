@@ -1,0 +1,19 @@
+<template>
+    <require from="bootstrap/css/bootstrap.css"></require>
+    <require from="toastr/toastr.min.css"></require>
+    <require from="./navigation"></require>
+    <require from="./style/style.css"></require>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">WebSiteName</a>
+            </div>
+            <navigation></navigation>
+        </div>
+    </nav>
+
+    <div class="container">
+        <router-view></router-view>
+    </div>
+</template>

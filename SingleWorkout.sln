@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6EA66415-7884-40A7-85DE-636F74A177AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68BBFAE1-543B-4F29-AB7B-093A4FF91689}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "FrontEnd", "src\FrontEnd\", "{12CE7D95-0421-4014-A280-5F61EC5ED98C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50282"
+		Debug.AspNetCompiler.PhysicalPath = "src\FrontEnd\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50282\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50282"
+		Release.AspNetCompiler.PhysicalPath = "src\FrontEnd\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50282\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50282"
+		SlnRelativePath = "src\FrontEnd\"
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Api", "src\Api\Api.xproj", "{4299D273-B5AA-4FBC-8F09-0D677554C5E5}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Domain", "src\Domain\Domain.xproj", "{47623F54-C36F-42EA-9364-4A1FA1EB551C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Api.Test", "src\Api.Test\Api.Test.xproj", "{60155A1D-5348-4AD1-9BCE-BBFD257F6B3F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Domain.Test", "src\Domain.Test\Domain.Test.xproj", "{7F4E48D4-88EC-48E4-94DB-DB6921E82DF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12CE7D95-0421-4014-A280-5F61EC5ED98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CE7D95-0421-4014-A280-5F61EC5ED98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CE7D95-0421-4014-A280-5F61EC5ED98C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CE7D95-0421-4014-A280-5F61EC5ED98C}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{4299D273-B5AA-4FBC-8F09-0D677554C5E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4299D273-B5AA-4FBC-8F09-0D677554C5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4299D273-B5AA-4FBC-8F09-0D677554C5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4299D273-B5AA-4FBC-8F09-0D677554C5E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47623F54-C36F-42EA-9364-4A1FA1EB551C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47623F54-C36F-42EA-9364-4A1FA1EB551C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47623F54-C36F-42EA-9364-4A1FA1EB551C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47623F54-C36F-42EA-9364-4A1FA1EB551C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60155A1D-5348-4AD1-9BCE-BBFD257F6B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60155A1D-5348-4AD1-9BCE-BBFD257F6B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60155A1D-5348-4AD1-9BCE-BBFD257F6B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60155A1D-5348-4AD1-9BCE-BBFD257F6B3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F4E48D4-88EC-48E4-94DB-DB6921E82DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F4E48D4-88EC-48E4-94DB-DB6921E82DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F4E48D4-88EC-48E4-94DB-DB6921E82DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F4E48D4-88EC-48E4-94DB-DB6921E82DF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{12CE7D95-0421-4014-A280-5F61EC5ED98C} = {6EA66415-7884-40A7-85DE-636F74A177AA}
+		{4299D273-B5AA-4FBC-8F09-0D677554C5E5} = {6EA66415-7884-40A7-85DE-636F74A177AA}
+		{47623F54-C36F-42EA-9364-4A1FA1EB551C} = {6EA66415-7884-40A7-85DE-636F74A177AA}
+		{60155A1D-5348-4AD1-9BCE-BBFD257F6B3F} = {6EA66415-7884-40A7-85DE-636F74A177AA}
+		{7F4E48D4-88EC-48E4-94DB-DB6921E82DF4} = {6EA66415-7884-40A7-85DE-636F74A177AA}
+	EndGlobalSection
+EndGlobal

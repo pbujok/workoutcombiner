@@ -1,0 +1,11 @@
+body {
+  background: #dbdbdb;
+  border-top: 3px solid #000;
+}
+body > div {
+  color: #000;
+  background: #00ffdd;
+}
+body input[type='file'] {
+  display: none!important;
+}

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TrainingCenterDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
+  <Activities>
+    <Activity Sport="Bike">
+      <Id>testId</Id>
+      <Lap StartTime="2016-09-14T22:08:41.288522+02:00">
+        <TotalTimeSeconds>0</TotalTimeSeconds>
+        <DistanceMeters>0</DistanceMeters>
+        <Calories>0</Calories>
+        <Intensity>Active</Intensity>
+        <TriggerMethod>Manual</TriggerMethod>
+      </Lap>
+      <Lap StartTime="2016-09-14T22:08:41.2900164+02:00">
+        <TotalTimeSeconds>0</TotalTimeSeconds>
+        <DistanceMeters>0</DistanceMeters>
+        <Calories>0</Calories>
+        <Intensity>Active</Intensity>
+        <TriggerMethod>Manual</TriggerMethod>
+      </Lap>
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>

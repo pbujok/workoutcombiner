@@ -1,0 +1,13 @@
+﻿<template>
+    <ul class="nav navbar-nav">
+        <li class.bind="home.isActiveClass">
+            <a route-href="route : home;" click.trigger="changeActive(home)">${home.name}</a>
+        </li>
+        <li class.bind="about.isActiveClass">
+            <a route-href="route : about;" click.trigger="changeActive(about)">${about.name}</a>
+        </li>
+        <li class.bind="form.isActiveClass">
+            <a route-href="route : form;" click.trigger="changeActive(form)">${form.name}</a>
+        </li>
+    </ul>
+</template>
