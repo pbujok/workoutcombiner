@@ -46,7 +46,7 @@ namespace Domain.WorkoutMerge
                     var totalTime = new TotalTrackTimeSeconds(mathingToSegments);
                     //TODO check if pulse set
                     var personInSegment = person.SetAvgHeartRate((int)mathingToSegments.Average(n => n.Pulse.Value));
-                    var calories = CaloriesFactory.CreateCalories(personInSegment, totalTime.Value / 3600);
+                    var calories = new Calories(personInSegment, totalTime.Value / 3600);
                     var segment = new Segment(
                         splitParameter.Sport,
                         splitParameter.Begin,

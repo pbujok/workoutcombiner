@@ -14,7 +14,7 @@ namespace Domain.Test
         public void CalcualteCalories_NoHeartRate_0Calories()
         {
             var person = new Person(Sex.Male, 70, 22, 0);
-            var sut = CaloriesFactory.CreateCalories(person, 1.5m);
+            var sut = new Calories(person, 1.5m);
 
             sut.Value.Should().Be(0);
         }
@@ -23,7 +23,7 @@ namespace Domain.Test
         public void CalcualteCalories_MaleInput_ValidCalories()
         {
             var person = new Person(Sex.Male, 70, 22, 150);
-            var sut = CaloriesFactory.CreateCalories(person, 1.5m);
+            var sut = new Calories(person, 1.5m);
 
             sut.Value.Should().Be(1245);
         }
@@ -32,7 +32,7 @@ namespace Domain.Test
         public void CalcualteCalories_FamaleInput_ValidCalories()
         {
             var person = new Person(Sex.Famale, 70, 22, 150);
-            var sut = CaloriesFactory.CreateCalories(person, 1.5m);
+            var sut = new Calories(person, 1.5m);
 
             sut.Value.Should().Be(848);
         }

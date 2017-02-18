@@ -18,20 +18,18 @@ namespace Domain.WorkoutMerge
 
         public TracksPair FindTrackIntersection()
         {
-            DateTime maxCommonTime = (new DateTime[] {
-                _first.Max(n => n.Time),
-                _second.Max(n => n.Time)
-            }).Min();
-
-            DateTime minCommonTime = (new DateTime[] {
-                _first.Min(n => n.Time),
-                _second.Min(n => n.Time)
-            }).Max();
+            DateTime maxCommonTime = FindMaxCommonTime();
+            DateTime minCommonTime = FindMinCommonTime();
 
             var intersectionFilter = new Func<TrackItem, bool>(n => n.Time >= minCommonTime && n.Time <= maxCommonTime);
             var firstFiltered = _first.Where(intersectionFilter).ToList();
             var secendFiltered = _second.Where(intersectionFilter).ToList();
 
+            return CreateIntersectionTrackPair(firstFiltered, secendFiltered);
+        }
+
+        private TracksPair CreateIntersectionTrackPair(List<TrackItem> firstFiltered, List<TrackItem> secendFiltered)
+        {
             List<TrackItem> primaryCollection;
             List<TrackItem> secondaryCollection;
 
@@ -47,6 +45,22 @@ namespace Domain.WorkoutMerge
             }
 
             return new TracksPair(primaryCollection, secondaryCollection);
+        }
+
+        private DateTime FindMinCommonTime()
+        {
+            return (new DateTime[] {
+                _first.Min(n => n.Time),
+                _second.Min(n => n.Time)
+            }).Max();
+        }
+
+        private DateTime FindMaxCommonTime()
+        {
+            return (new DateTime[] {
+                _first.Max(n => n.Time),
+                _second.Max(n => n.Time)
+            }).Min();
         }
     }
 }
