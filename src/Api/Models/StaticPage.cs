@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Domain.Common;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace Domain.Statics
+namespace Api.Models
 {
-    public class StaticPage : Entity
+    public class StaticPage
     {
-        [BsonElement("slug")]
+        public int Id { get; set; }
+
         public string Slug {get; set; }
 
-        [BsonElement("title")]
         public string Title { get; set; }
 
-        [BsonElement("description")]
         public string Description { get; set; }
+
+        public StaticPage()
+        {
+
+        }
 
         public StaticPage(string title, string description)
         {
-            Id = Guid.NewGuid().ToString();
             Title = title;
             Description = description;
             Slug = GetTitleSlug(Title);

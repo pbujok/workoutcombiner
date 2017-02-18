@@ -1,6 +1,4 @@
-﻿using Domain.WorkoutMerge;
-
-namespace Domain.Models
+﻿namespace Api.Models
 {
     public class UploadFileModel
     {

@@ -1,12 +1,11 @@
-﻿using Domain.Statics;
+﻿using Api.ApplicationServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 
-namespace Domain
+namespace Api
 {
     public class Startup
     {
@@ -59,7 +58,7 @@ namespace Domain
 
         private void ConfigureDependencies(IServiceCollection services)
         {
-            services.AddScoped<StaticPageRepository>();
+            services.AddScoped<StaticPageAppService>();
         }
     }
 }

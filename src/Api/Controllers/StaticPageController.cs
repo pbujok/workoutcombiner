@@ -1,4 +1,4 @@
-﻿using Domain.Statics;
+﻿using Api.ApplicationServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Domain.Controllers
@@ -6,18 +6,18 @@ namespace Domain.Controllers
     [Route("api/[controller]")]
     public class StaticPageController : Controller
     {
-        private StaticPageRepository staticPageRepository;
+        private StaticPageAppService staticPageService;
 
-        public StaticPageController(StaticPageRepository staticPageRepository)
+        public StaticPageController(StaticPageAppService staticPageService)
         {
-            this.staticPageRepository = staticPageRepository;
+            this.staticPageService = staticPageService;
         }
 
         // GET api/values/5
         [HttpGet("{name}")]
         public IActionResult Get(string name)
         {
-            return Json(staticPageRepository.GetStaticPageByName(name));
+            return Json(staticPageService.GetStaticPageByName(name));
         }
     }
 }

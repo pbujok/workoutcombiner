@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using Domain.DataFormats;
-using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Domain.Mappers;
-using AutoMapper;
 using Domain.WorkoutMerge;
-using System.Threading.Tasks;
 using Api.Mappers;
 using System.Text;
+using Api.Models;
 
 namespace Domain.Controllers
 {
