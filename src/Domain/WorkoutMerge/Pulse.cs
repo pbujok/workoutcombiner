@@ -3,10 +3,6 @@ using Domain.Common;
 
 namespace Domain.WorkoutMerge
 {
-    public class Test
-    {
-
-    }
     public class Pulse : ValueObject<Pulse>, IMaybeNull
     {
         private int? _value;

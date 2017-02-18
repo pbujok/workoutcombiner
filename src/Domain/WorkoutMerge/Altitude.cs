@@ -22,10 +22,5 @@ namespace Domain.WorkoutMerge
 
             return other.HasValue == HasValue;
         }
-
-        public bool IsMatchingTo(Altitude other)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

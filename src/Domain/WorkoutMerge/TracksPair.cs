@@ -27,6 +27,14 @@ namespace Domain.WorkoutMerge
             Secondary = secondaryCollection;
         }
 
+        protected override bool EqualsCore(TracksPair other)
+        {
+            if (HasBoth == other.HasBoth)
+                return true;
+
+            return ReferenceEquals(other, this);
+        }
+
         public List<TrackItem> Primary { get; }
         public List<TrackItem> Secondary { get; }
 
@@ -64,14 +72,6 @@ namespace Domain.WorkoutMerge
 
             itemsList.Reverse();
             return MergeResult<List<TrackItem>>.Success(itemsList);
-        }
-
-        protected override bool EqualsCore(TracksPair other)
-        {
-            if (HasBoth == other.HasBoth)
-                return true;
-
-            return ReferenceEquals(other, this);
         }
 
         private MergeResult<TrackItem> MergeMatchingSecondary(List<TrackItem> secondaryTrack, TrackItem primaryItem)

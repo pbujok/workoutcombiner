@@ -28,10 +28,9 @@ namespace Domain.WorkoutMerge
                 _second.Min(n => n.Time)
             }).Max();
 
-            var firstFiltered = _first
-                .Where(n => n.Time >= minCommonTime && n.Time <= maxCommonTime).ToList();
-            var secendFiltered = _second
-                .Where(n => n.Time >= minCommonTime && n.Time <= maxCommonTime).ToList();
+            var intersectionFilter = new Func<TrackItem, bool>(n => n.Time >= minCommonTime && n.Time <= maxCommonTime);
+            var firstFiltered = _first.Where(intersectionFilter).ToList();
+            var secendFiltered = _second.Where(intersectionFilter).ToList();
 
             List<TrackItem> primaryCollection;
             List<TrackItem> secondaryCollection;
