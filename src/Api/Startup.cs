@@ -1,5 +1,4 @@
-﻿using Api.Infrastructure;
-using Domain.Statics;
+﻿using Domain.Statics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -60,9 +59,6 @@ namespace Domain
 
         private void ConfigureDependencies(IServiceCollection services)
         {
-            services.AddScoped<CustomMongoClient>();
-            services.AddScoped<IMongoDatabase>(n =>
-                    n.GetService<CustomMongoClient>().GetDatabase("statics"));
             services.AddScoped<StaticPageRepository>();
         }
     }
