@@ -6,7 +6,7 @@ namespace Api.Mappers
 {
     public static class FormUploadMapper
     {
-        public static Person ToPersonDomain(this UploadFileModel model)
+        public static Person GetPersonDomain(this UploadFileModel model)
         {
             Sex sex;
             if (model.Sex == "MALE")
@@ -17,6 +17,11 @@ namespace Api.Mappers
                 throw new ArgumentException("invalid model");
 
             return new Person(sex, model.KilogramsWeight, model.Age, 0);
+        }
+
+        public static MergePriority GetMergePriority(this UploadFileModel model)
+        {
+            return MergePriority.Empty;
         }
     }
 }

@@ -8,12 +8,22 @@ using Domain.WorkoutMerge;
 using Api.Mappers;
 using System.Text;
 using Api.Models;
+using Api.ApplicationServices;
 
 namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     public class MergeController : Controller
     {
+        private MergeWorkoutAppService _mergeWorkoutService;
+        private XmlSerializer _serializer;
+
+        public MergeController(MergeWorkoutAppService mergeWorkoutService)
+        {
+            _mergeWorkoutService = mergeWorkoutService;
+            _serializer = new XmlSerializer(typeof(TrainingCenterDatabase));
+        }
+
         // POST api/Merge
         [HttpPost]
         public IActionResult Post(UploadFileModel model)
@@ -21,35 +31,24 @@ namespace Domain.Controllers
             var fileStreamReaders =
                 Request.Form.Files.Select(
                     file => new StreamReader(file.OpenReadStream()));
-
-            XmlSerializer serializer =
-                new XmlSerializer(typeof(TrainingCenterDatabase));
-
+            
             var input =
-                fileStreamReaders.Select(n => (TrainingCenterDatabase)serializer.Deserialize(n))
-                    .ToList<TrainingCenterDatabase>();
+                fileStreamReaders.Select(n => (TrainingCenterDatabase)_serializer.Deserialize(n))
+                    .ToList<TrainingCenterDatabase>().AsReadOnly();
 
-            TcxMapper mapper = new TcxMapper();
-            var result = input.Select(n => mapper.MapToDomain(n)).ToList();
-            //todo resolve priorty issues
-            MergePriority mergePriority = MergePriority.Create(n => n.Altitude, n => n.Distance);
-            result[1].DefinePriority(mergePriority);
-            var person = model.ToPersonDomain();
-            var res = result[0].Merge(result[1], person);
+            var result = _mergeWorkoutService.Merge(input, model);
 
-            if (!res.IsConflicted)
-            {
-                return CreateResultFile(serializer, mapper, res);
-            }
-
-            return null;
+            if (result.IsSuccess)
+                return CreateResultFile(result.Value);
+            else
+                return StatusCode(500, result.ConflicatedProperties);
+            
         }
 
-        private IActionResult CreateResultFile(XmlSerializer serializer, TcxMapper mapper, MergeResult<Workout> res)
+        private IActionResult CreateResultFile(TrainingCenterDatabase tcxExport)
         {
             MemoryStream stream = new MemoryStream();
-            var tcxExport = mapper.ToTcx(res.Value);
-            serializer.Serialize(stream, tcxExport);
+            _serializer.Serialize(stream, tcxExport);
             var fileString = Encoding.UTF8.GetString(stream.ToArray());
             var bytes = Encoding.UTF8.GetBytes(fileString);
             return File(bytes, "text/xml");

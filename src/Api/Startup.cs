@@ -1,4 +1,5 @@
 ﻿using Api.ApplicationServices;
+using Domain.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +60,8 @@ namespace Api
         private void ConfigureDependencies(IServiceCollection services)
         {
             services.AddScoped<StaticPageAppService>();
+            services.AddScoped<TcxMapper>();
+            services.AddScoped<MergeWorkoutAppService>();
         }
     }
 }
