@@ -31,7 +31,7 @@ namespace Domain.Controllers
 
             TcxMapper mapper = new TcxMapper();
             var result = input.Select(n => mapper.MapToDomain(n)).ToList();
-
+            //todo resolve priorty issues
             MergePriority mergePriority = MergePriority.Create(n => n.Altitude, n => n.Distance);
             result[1].DefinePriority(mergePriority);
             var person = model.ToPersonDomain();
