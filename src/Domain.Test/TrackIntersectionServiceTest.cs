@@ -14,7 +14,7 @@ namespace Domain.Test
         public void FindIntersection_SetsWithIntersection_2ItemsIntersection()
         {
             var firstSet = GetTrackItems(4);
-            var secondSet = GetTrackItems(4, 2);
+            var secondSet = GetTrackItems(4, offset : 2);
 
             var sut = new TrackIntersectionService(firstSet, secondSet);
 
@@ -27,7 +27,7 @@ namespace Domain.Test
         public void FindIntersection_SetsWithoutIntersection_NoIntersection()
         {
             var firstSet = GetTrackItems(2);
-            var secondSet = GetTrackItems(2, 2);
+            var secondSet = GetTrackItems(2, offset : 2);
 
             var sut = new TrackIntersectionService(firstSet, secondSet);
 
@@ -37,16 +37,16 @@ namespace Domain.Test
         }
 
         [Fact]
-        public void FindIntersection_SetConteinedIn_2CommonItems()
+        public void FindIntersection_SetConteinedIn_3CommonItems()
         {
             var firstSet = GetTrackItems(5);
-            var secondSet = GetTrackItems(2, 2);
+            var secondSet = GetTrackItems(3, offset : 2);
 
             var sut = new TrackIntersectionService(firstSet, secondSet);
 
             var result = sut.FindTrackIntersection();
-            result.Primary.Count.Should().Be(2);
-            result.Secondary.Count.Should().Be(2);
+            result.Primary.Count.Should().Be(3);
+            result.Secondary.Count.Should().Be(3);
         }
 
         private IEnumerable<TrackItem> GetTrackItems(int count, int offset = 0)
