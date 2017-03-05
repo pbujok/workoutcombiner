@@ -22,7 +22,7 @@ namespace Domain.WorkoutMerge
         {
             get
             {
-                return Track.Sum(n => n.Distance.HasValue ? (float)n.Distance.Value : 0);
+                return Track.Max(n => n.Distance.HasValue ? (float)n.Distance.Value : 0);
             }
         }
 

@@ -49,7 +49,7 @@ namespace Domain.Test
 
             var segment = CreateSegment(dateTime, track);
 
-            segment.DistanceMeters.Should().Be(45);
+            segment.DistanceMeters.Should().Be(10);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace Domain.Test
             {
                 trackItem.Add(new TrackItem(startDate.AddSeconds(5 * i),
                                 new Coordiantes(), new Cadence(),
-                                new Pulse(), new Altitude(), new Distance(i)));
+                                new Pulse(), new Altitude(), new Distance(i+1)));
             }
             return trackItem;
         }

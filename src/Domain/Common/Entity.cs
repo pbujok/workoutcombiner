@@ -11,11 +11,11 @@ namespace Domain.Common
 
         public override bool Equals(object obj)
         {
-            var other = obj as Entity;
-
-            if (ReferenceEquals(other, null))
+            if (obj == null)
                 return false;
 
+            var other = obj as Entity;
+            
             if (ReferenceEquals(this, other))
                 return true;
 
@@ -27,10 +27,7 @@ namespace Domain.Common
 
         public static bool operator ==(Entity a, Entity b)
         {
-            if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
-                return true;
-
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            if (a == null)
                 return false;
 
             return a.Equals(b);
