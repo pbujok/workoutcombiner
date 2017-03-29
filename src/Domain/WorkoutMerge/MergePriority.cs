@@ -9,9 +9,15 @@ namespace Domain.WorkoutMerge
 {
     public class MergePriority : ValueObject<MergePriority>
     {
-        public static MergePriority Empty = new MergePriority();
+        public static MergePriority Empty = new MergePriority(new List<Expression<Func<TrackItem, object>>>());
         public static MergePriority Create(
             params Expression<Func<TrackItem, object>>[] propertiesWithPriority)
+        {
+            return new MergePriority(propertiesWithPriority.ToList());
+        }
+
+        public static MergePriority Create(
+            List<Expression<Func<TrackItem, object>>> propertiesWithPriority)
         {
             return new MergePriority(propertiesWithPriority);
         }
@@ -19,7 +25,7 @@ namespace Domain.WorkoutMerge
         List<Expression<Func<TrackItem, object>>> _priorityCollection;
 
         private MergePriority(
-            params Expression<Func<TrackItem, object>>[] propertiesWithPriority)
+            List<Expression<Func<TrackItem, object>>> propertiesWithPriority)
         {
             this._priorityCollection = propertiesWithPriority.ToList();
         }
