@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Domain.Common;
 using System.Linq;
+using System.Reflection;
 
 namespace Domain.WorkoutMerge
 {
@@ -30,6 +31,11 @@ namespace Domain.WorkoutMerge
 
         public ReadOnlyCollection<TrackItem> Track { get; }
         
+        public bool HasPropertyDefined(string propertyName)
+        {
+            return Track.Any(n => n.HasPropertyDefined(propertyName));
+        }
+
         public static List<Segment> SplitToSegments(List<TrackItem> toSplit,
             List<SplitSegmentParameter> splitParameters, Person person)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using Domain.Common;
 
 namespace Domain.WorkoutMerge
@@ -78,6 +79,12 @@ namespace Domain.WorkoutMerge
 
             var trackItem = CreateTrackItem(other);
             return MergeResult<TrackItem>.Success(trackItem);
+        }
+
+        public bool HasPropertyDefined(string propertyName)
+        {
+            var value = this.GetType().GetProperty(propertyName).GetValue(this) as IMaybeNull;
+            return value.HasValue;
         }
 
         public TrackItem SetPriority(MergePriority mergePriority)

@@ -19,7 +19,9 @@ namespace Api.Test
         [Fact]
         public void TCXMergeResultIsSuccess_Conflicted_False()
         {
-            var sut = new TcxMergeResult(new List<string> { "test", "test2" });
+            var sut = new TcxMergeResult(new List<ConflictedProperty> {
+                new ConflictedProperty("test", null),
+                new ConflictedProperty("test2", null)});
 
             sut.IsSuccess.Should().Be(false);
         }
@@ -27,7 +29,7 @@ namespace Api.Test
         [Fact]
         public void TCXMergeResultIsSuccess_Conflicted_Exception()
         {
-            Assert.Throws<ArgumentException>(() => new TcxMergeResult(new List<string> { }));
+            Assert.Throws<ArgumentException>(() => new TcxMergeResult(new List<ConflictedProperty> { }));
         }
     }
 }

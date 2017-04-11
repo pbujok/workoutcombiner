@@ -30,6 +30,11 @@ namespace Domain.WorkoutMerge
             return this;
         }
 
+        public bool HasPropertyDefined(string propertyName)
+        {
+            return Segments.Any(n => n.HasPropertyDefined(propertyName));
+        }
+
         public MergeResult<Workout> Merge(Workout other, Person person)
         {
             var trackIntersectionService = new TrackIntersectionService(

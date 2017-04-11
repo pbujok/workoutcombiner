@@ -49,15 +49,20 @@
             </div>
         </div>
 
-        <div class="form-inline" validation-errors.bind="nameErrors"
-             repeat.for="file of fileInputs">
-            <div class="form-group">
-                <span>${file.file | fileName}</span>
-                <input type="file" files.bind="file.file | fileInput" accept=".tcx,.gpx" class="form-control" />
-                <button class="btn btn-info" click.delegate="file.pick($event)">pick</button>
-                <button class="btn btn-danger" click.delegate="$parent.removeFile(file)">-</button>
-            </div>
-        </div>
+        <table>
+            <tr>
+                <th>File</th>
+            </tr>
+            <tr validation-errors.bind="nameErrors"
+                repeat.for="file of fileInputs">
+                <td>
+                    <span>${file.file | fileName}</span>
+                    <input type="file" files.bind="file.file | fileInput" accept=".tcx,.gpx" class="form-control" />
+                    <button class="btn btn-info" click.delegate="file.pick($event)">pick</button>
+                    <button class="btn btn-danger" click.delegate="$parent.removeFile(file)">-</button>
+                </td>
+            </tr>
+        </table>
 
         <div class="form-inline">
             <button class="btn btn-primary" click.delegate="addFileInput()">Dodaj plik</button>
