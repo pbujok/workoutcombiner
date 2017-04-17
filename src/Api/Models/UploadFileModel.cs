@@ -12,9 +12,9 @@ namespace Api.Models
         public string Sex { get; set; }
         public string Priority { get; set; }
 
-        public IEnumerable<Priority> GetPriority()
+        public List<Priority> GetPriority()
         {
-            return JsonConvert.DeserializeObject<IEnumerable<Priority>>(Priority);
+            return JsonConvert.DeserializeObject<List<Priority>>(Priority);
         }
     }
 

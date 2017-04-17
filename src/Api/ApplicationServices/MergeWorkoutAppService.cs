@@ -7,7 +7,6 @@ using Api.Models;
 using Domain.DataFormats;
 using Domain.Mappers;
 using Domain.WorkoutMerge;
-using Domain.WorkoutMerge.Utils;
 
 namespace Api.ApplicationServices
 {
@@ -22,32 +21,26 @@ namespace Api.ApplicationServices
 
         public TcxMergeResult Merge(ReadOnlyCollection<TrainingCenterDatabase> inputsToMerge, UploadFileModel uploadModel)
         {
-            if (inputsToMerge.Count < 2)
-                throw new ArgumentException("there must be atleast two inputsToMerge");
+            EnsureInputAmmountEnough(inputsToMerge);
 
+            var personInfo = uploadModel.GetPersonDomain();
             var priorityInfo = uploadModel.GetPriority();
-            var separatedWorkouts = inputsToMerge.Select(n => _tcxMapper.MapToDomain(n)).ToList<Workout>();
+            List<Workout> workouts = MapInputToWorkouts(inputsToMerge);
+            var mergeOperation = new MergeOperation(personInfo, priorityInfo, workouts);
 
-            var person = uploadModel.GetPersonDomain();
-
-            List<ConflictedProperty> conflicts = new List<ConflictedProperty>();
+            var conflicts = new List<ConflictedProperty>();
             TrainingCenterDatabase result = null;
 
-            for (var i = 1; i < separatedWorkouts.Count; ++i)
+            for (var i = 1; i < workouts.Count; ++i)
             {
-                var firstWorkout = GetWorkoutWithPriority(separatedWorkouts, priorityInfo, i - 1);
-                var secoendWorkout = GetWorkoutWithPriority(separatedWorkouts, priorityInfo, i);
-                var mergeResult = firstWorkout.Merge(secoendWorkout, person);
+                MergeResult<Workout> mergeResult = mergeOperation.Execute(i);
                 if (!mergeResult.IsConflicted)
                 {
                     result = _tcxMapper.ToTcx(mergeResult.Value);
                 }
                 else
                 {
-                    var conflictInfo = mergeResult.Conflicts.Select(n =>
-                        new ConflictedProperty(n.ConflictedProperty,
-                            GetIndexesWithDefinedProperty(n.ConflictedProperty, separatedWorkouts)));
-                    conflicts.AddRange(conflictInfo);
+                    conflicts.AddRange(CreateConflictInfo(workouts, mergeResult));
                 }
             }
 
@@ -57,15 +50,24 @@ namespace Api.ApplicationServices
                 return new TcxMergeResult(result);
         }
 
-        private Workout GetWorkoutWithPriority(List<Workout> workouts, IEnumerable<Priority> priorityInfo, int index)
+        private static void EnsureInputAmmountEnough(ReadOnlyCollection<TrainingCenterDatabase> inputsToMerge)
         {
-            var workout = workouts[index];
-            var priority = priorityInfo.Single(n => n.FileIndex == index);
-            var mergePriority = MergePriorityBuilder.Create().AddProperties(priority.PriorityInfo).Build();
-            workout.DefinePriority(mergePriority);
-            return workout;
+            if (inputsToMerge.Count < 2)
+                throw new ArgumentException("there must be atleast two inputsToMerge");
         }
 
+        private List<Workout> MapInputToWorkouts(ReadOnlyCollection<TrainingCenterDatabase> inputsToMerge)
+        {
+            return inputsToMerge.Select(n => _tcxMapper.MapToDomain(n)).ToList();
+        }
+
+        private IEnumerable<ConflictedProperty> CreateConflictInfo(List<Workout> workouts, MergeResult<Workout> mergeResult)
+        {
+            return mergeResult.Conflicts.Select(n =>
+                                    new ConflictedProperty(n.ConflictedProperty,
+                                        GetIndexesWithDefinedProperty(n.ConflictedProperty, workouts)));
+        }
+                
         private List<int> GetIndexesWithDefinedProperty(string propertyName, List<Workout> workouts)
         {
             List<int> indexes = new List<int>();
