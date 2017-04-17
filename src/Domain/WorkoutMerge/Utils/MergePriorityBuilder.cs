@@ -20,6 +20,15 @@ namespace Domain.WorkoutMerge.Utils
             return new MergePriorityBuilder();
         }
 
+        public MergePriorityBuilder AddProperties(IEnumerable<string> properties)
+        {
+            foreach (var property in properties)
+            {
+                AddProperty(property);
+            }
+            return this;
+        }
+
         public MergePriorityBuilder AddProperty(string propertyName)
         {
             switch (propertyName.ToLower())

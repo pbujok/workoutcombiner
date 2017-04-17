@@ -178,6 +178,15 @@ define('form',['exports', 'aurelia-framework', 'aurelia-validation', 'aurelia-fe
         }
     }
 
+    var WorkoutAttributes = function WorkoutAttributes(pulse, altitude, distance, cadence) {
+        _classCallCheck(this, WorkoutAttributes);
+
+        this.pulse = pulse;
+        this.altitude = altitude;
+        this.distance = distance;
+        this.cadence = cadence;
+    };
+
     var FileInput = function () {
         function FileInput() {
             var file = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
@@ -185,10 +194,17 @@ define('form',['exports', 'aurelia-framework', 'aurelia-validation', 'aurelia-fe
             _classCallCheck(this, FileInput);
 
             this.file = file;
+
+            this.conflicts = new WorkoutAttributes(false, false, false, false);
+            this.priority = new WorkoutAttributes(false, false, false, false);
         }
 
         FileInput.prototype.pick = function pick($event) {
             $($event.srcElement).siblings("input[type='file']").click();
+        };
+
+        FileInput.prototype.addConflictedProperty = function addConflictedProperty(propertyName) {
+            this.conflicts[propertyName.toLowerCase()] = true;
         };
 
         return FileInput;
@@ -199,7 +215,7 @@ define('form',['exports', 'aurelia-framework', 'aurelia-validation', 'aurelia-fe
             _classCallCheck(this, Form);
 
             this.name = "";
-            this.person = new Person('FAMALE', 2, 3);
+            this.person = new Person('MALE', 75, 25);
             this.toastr = toastr;
 
             this.fileInputs = [];
@@ -225,19 +241,49 @@ define('form',['exports', 'aurelia-framework', 'aurelia-validation', 'aurelia-fe
         Form.prototype.submit = function submit() {
             var _this = this;
 
+            var self = this;
             this._controller.validate().then(function (result) {
                 if (result.length > 0) {
                     return;
                 }
+                var priorityInfo = _this._constructPriorityInfo();
                 var files = _this.fileInputs.map(function (fileInput) {
                     return fileInput.file;
                 });
-                _this.workoutFileUploader.postFileAjax(files, _this.name, _this.person).then(function () {
+                _this.workoutFileUploader.postFileAjax(files, _this.name, _this.person, priorityInfo).then(function () {
                     alert('sukces');
-                }).fail(function (err) {
-                    _this.toastr.error(err);
+                }).fail(function (data) {
+                    var conflictInfo = JSON.parse(data),
+                        conflict = void 0,
+                        fileIndex = void 0;
+                    for (var i in conflictInfo) {
+                        conflict = conflictInfo[i];
+                        for (var f in conflict.containingFile) {
+                            fileIndex = conflict.containingFile[f];
+                            self.fileInputs[fileIndex].addConflictedProperty(conflict.propertyName);
+                        }
+                    }
+
+                    _this.toastr.error("There are conflicts");
                 });
             });
+        };
+
+        Form.prototype._constructPriorityInfo = function _constructPriorityInfo() {
+            var file = void 0,
+                result = [],
+                priorityInfo = void 0;
+            for (var i in this.fileInputs) {
+                priorityInfo = [];
+                file = this.fileInputs[i];
+                for (var p in file.priority) {
+                    if (file.priority[p] === "on") {
+                        priorityInfo.push(p);
+                    }
+                }
+                result.push({ FileIndex: i, PriorityInfo: priorityInfo });
+            }
+            return result;
         };
 
         Form.prototype._defineValidationRules = function _defineValidationRules() {
@@ -557,12 +603,13 @@ define('helpers/workout-file-uploader',['exports', 'aurelia-framework', 'aurelia
             this.eventAggregator = eventAggregator;
         }
 
-        WorkoutFileUploader.prototype.postFileAjax = function postFileAjax(files, name, person) {
+        WorkoutFileUploader.prototype.postFileAjax = function postFileAjax(files, name, person, priority) {
             var data = new FormData(),
                 that = this,
                 deferred = jQuery.Deferred();
 
             data.append("model.Name", name);
+            data.append("model.Priority", JSON.stringify(priority));
 
             for (var prop in person) {
                 data.append("model." + prop, person[prop]);
@@ -584,7 +631,7 @@ define('helpers/workout-file-uploader',['exports', 'aurelia-framework', 'aurelia
                     deferred.resolve();
                 },
                 error: function error(xhr, status, err) {
-                    deferred.reject(err);
+                    deferred.reject(xhr.responseText);
                 }
             });
 
@@ -2191,10 +2238,10 @@ define('aurelia-validation/implementation/validation-rules',["require", "exports
     exports.ValidationRules = ValidationRules;
 });
 
-define('text!about.html', ['module'], function(module) { module.exports = "<template><h2>${title}</h2>${content}</template>"; });
 define('text!style/style.css', ['module'], function(module) { module.exports = "body {\r\n  background: #dbdbdb;\r\n  border-top: 3px solid #000;\r\n}\r\nbody > div {\r\n  color: #000;\r\n  background: #00ffdd;\r\n}\r\nbody input[type='file'] {\r\n  display: none!important;\r\n}\r\n"; });
+define('text!about.html', ['module'], function(module) { module.exports = "<template><h2>${title}</h2>${content}</template>"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"toastr/toastr.min.css\"></require><require from=\"./navigation\"></require><require from=\"./style/style.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\">WebSiteName</a></div><navigation></navigation></div></nav><div class=\"container\"><router-view></router-view></div></template>"; });
-define('text!form.html', ['module'], function(module) { module.exports = "<template><require from=\"./value_converters/file-name-value-converter\"></require><require from=\"./value_converters/file-input-value-converter\"></require><div class=\"upload-file-cnt form-horizontal\" class.bind=\"isDragover ? 'dragover' : ''\"><div class=\"row\"><div class=\"form-group col-md-6\" validation-errors.bind=\"nameErrors\"><label class=\"control-label col-md-4\" for=\"name\">Nazwa</label><div class=\"col-md-8\"><input type=\"text\" name=\"name\" class=\"form-control\" value.bind=\"name & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of nameErrors\">${errorInfo.error.message}</span></div><div class=\"form-group col-md-6\" validation-errors.bind=\"ageErrors\"><label class=\"control-label col-md-4\" for=\"name\">Wiek</label><div class=\"col-md-8\"><input type=\"number\" name=\"age\" class=\"form-control\" value.bind=\"person.Age & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of ageErrors\">${errorInfo.error.message}</span></div></div><div class=\"row\"><div class=\"form-group col-md-6\" validation-errors.bind=\"weightErrors\"><label class=\"control-label col-md-4\" for=\"name\">Waga</label><div class=\"col-md-8\"><input type=\"number\" name=\"weight\" class=\"form-control\" value.bind=\"person.KilogramsWeight & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of weightErrors\">${errorInfo.error.message}</span></div><div class=\"form-group col-md-6\" validation-errors.bind=\"sexErrors\"><label class=\"control-label col-md-4\" for=\"name\">Płeć</label><div class=\"col-md-8\"><select name=\"sex\" class=\"form-control\" value.bind=\"person.Sex & validate\"><option value=\"MALE\">Chłopiec</option><option value=\"FAMALE\">Dziewczynka</option></select></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of sexErrors\">${errorInfo.error.message}</span></div></div><table><tr><th>File</th></tr><tr validation-errors.bind=\"nameErrors\" repeat.for=\"file of fileInputs\"><td><span>${file.file | fileName}</span> <input type=\"file\" files.bind=\"file.file | fileInput\" accept=\".tcx,.gpx\" class=\"form-control\"> <button class=\"btn btn-info\" click.delegate=\"file.pick($event)\">pick</button> <button class=\"btn btn-danger\" click.delegate=\"$parent.removeFile(file)\">-</button></td></tr></table><div class=\"form-inline\"><button class=\"btn btn-primary\" click.delegate=\"addFileInput()\">Dodaj plik</button> <button class=\"btn btn-primary\" click.delegate=\"submit()\">Submit</button></div></div></template>"; });
+define('text!form.html', ['module'], function(module) { module.exports = "<template><require from=\"./value_converters/file-name-value-converter\"></require><require from=\"./value_converters/file-input-value-converter\"></require><div class=\"upload-file-cnt form-horizontal\" class.bind=\"isDragover ? 'dragover' : ''\"><div class=\"row\"><div class=\"form-group col-md-6\" validation-errors.bind=\"nameErrors\"><label class=\"control-label col-md-4\" for=\"name\">Nazwa</label><div class=\"col-md-8\"><input type=\"text\" name=\"name\" class=\"form-control\" value.bind=\"name & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of nameErrors\">${errorInfo.error.message}</span></div><div class=\"form-group col-md-6\" validation-errors.bind=\"ageErrors\"><label class=\"control-label col-md-4\" for=\"name\">Wiek</label><div class=\"col-md-8\"><input type=\"number\" name=\"age\" class=\"form-control\" value.bind=\"person.Age & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of ageErrors\">${errorInfo.error.message}</span></div></div><div class=\"row\"><div class=\"form-group col-md-6\" validation-errors.bind=\"weightErrors\"><label class=\"control-label col-md-4\" for=\"name\">Waga</label><div class=\"col-md-8\"><input type=\"number\" name=\"weight\" class=\"form-control\" value.bind=\"person.KilogramsWeight & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of weightErrors\">${errorInfo.error.message}</span></div><div class=\"form-group col-md-6\" validation-errors.bind=\"sexErrors\"><label class=\"control-label col-md-4\" for=\"name\">Płeć</label><div class=\"col-md-8\"><select name=\"sex\" class=\"form-control\" value.bind=\"person.Sex & validate\"><option value=\"MALE\">Chłopiec</option><option value=\"FAMALE\">Dziewczynka</option></select></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of sexErrors\">${errorInfo.error.message}</span></div></div><table><tr><th>File</th><th>Pulse</th><td>Cadence</td><td>Distance</td><td>Altitude</td><td>dsad</td></tr><tr validation-errors.bind=\"nameErrors\" repeat.for=\"file of fileInputs\"><td><span>${file.file | fileName}</span> <input type=\"file\" files.bind=\"file.file | fileInput\" accept=\".tcx,.gpx\" class=\"form-control\"> <button class=\"btn btn-info\" click.delegate=\"file.pick($event)\">pick</button> <button class=\"btn btn-danger\" click.delegate=\"$parent.removeFile(file)\">-</button></td><td if.bind=\"file.conflicts.pulse\"><input type=\"radio\" name=\"pulse\" checked.bind=\"file.priority.pulse\"></td><td if.bind=\"file.conflicts.cadence\"><input type=\"radio\" name=\"cadence\" checked.bind=\"file.priority.cadence\"></td><td if.bind=\"file.conflicts.distance\"><input type=\"radio\" name=\"distance\" checked.bind=\"file.priority.distance\"></td><td if.bind=\"file.conflicts.altitude\"><input type=\"radio\" name=\"altitude\" checked.bind=\"file.priority.altitude\"></td>${file.priority}</tr></table><div class=\"form-inline\"><button class=\"btn btn-primary\" click.delegate=\"addFileInput()\">Dodaj plik</button> <button class=\"btn btn-primary\" click.delegate=\"submit()\">Submit</button></div></div></template>"; });
 define('text!home.html', ['module'], function(module) { module.exports = "<template><h2>Hello</h2></template>"; });
 define('text!navigation.html', ['module'], function(module) { module.exports = "<template><ul class=\"nav navbar-nav\"><li class.bind=\"home.isActiveClass\"><a route-href=\"route : home;\" click.trigger=\"changeActive(home)\">${home.name}</a></li><li class.bind=\"about.isActiveClass\"><a route-href=\"route : about;\" click.trigger=\"changeActive(about)\">${about.name}</a></li><li class.bind=\"form.isActiveClass\"><a route-href=\"route : form;\" click.trigger=\"changeActive(form)\">${form.name}</a></li></ul></template>"; });
 //# sourceMappingURL=app-bundle.js.map

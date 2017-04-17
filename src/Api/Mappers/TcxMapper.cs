@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Domain.DataFormats;
 using Domain.WorkoutMerge;
+using Api.Models;
+using Domain.WorkoutMerge.Utils;
 
 namespace Domain.Mappers
 {
@@ -88,8 +90,9 @@ namespace Domain.Mappers
                         )
                     );
             }
-
-            return new Workout(segments, activity.Id);
+            
+            var workout = new Workout(segments, activity.Id);
+            return workout;
         }
 
         private TrackItem MapToTrackItem(Trackpoint trackpoint)

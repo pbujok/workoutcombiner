@@ -1,6 +1,7 @@
 ﻿using System;
 using Api.Models;
 using Domain.WorkoutMerge;
+using Domain.WorkoutMerge.Utils;
 
 namespace Api.Mappers
 {
@@ -17,11 +18,6 @@ namespace Api.Mappers
                 throw new ArgumentException("invalid model");
 
             return new Person(sex, model.KilogramsWeight, model.Age, 0);
-        }
-
-        public static MergePriority GetMergePriority(this UploadFileModel model)
-        {
-            return MergePriority.Empty;
         }
     }
 }

@@ -14,3 +14,4 @@
 /.vs
 /packages
 /src/Api/Properties/PublishProfiles
+/src/Api/*.user

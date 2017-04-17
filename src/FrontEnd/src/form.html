@@ -1,72 +1,90 @@
 ﻿<template>
-    <require from="./value_converters/file-name-value-converter"></require>
-    <require from="./value_converters/file-input-value-converter"></require>
+  <require from="./value_converters/file-name-value-converter"></require>
+  <require from="./value_converters/file-input-value-converter"></require>
 
-    <div class="upload-file-cnt form-horizontal" class.bind="isDragover ? 'dragover' : ''">
-        <div class="row">
-            <div class="form-group col-md-6" validation-errors.bind="nameErrors">
-                <label class="control-label col-md-4" for="name">Nazwa</label>
-                <div class="col-md-8">
-                    <input type="text" name="name" class="form-control" value.bind="name & validate" />
-                </div>
-                <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of nameErrors">
-                    ${errorInfo.error.message}
-                </span>
-            </div>
-
-            <div class="form-group col-md-6" validation-errors.bind="ageErrors">
-                <label class="control-label col-md-4" for="name">Wiek</label>
-                <div class="col-md-8">
-                    <input type="number" name="age" class="form-control" value.bind="person.Age & validate" />
-                </div>
-                <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of ageErrors">
-                    ${errorInfo.error.message}
-                </span>
-            </div>
+  <div class="upload-file-cnt form-horizontal" class.bind="isDragover ? 'dragover' : ''">
+    <div class="row">
+      <div class="form-group col-md-6" validation-errors.bind="nameErrors">
+        <label class="control-label col-md-4" for="name">Nazwa</label>
+        <div class="col-md-8">
+          <input type="text" name="name" class="form-control" value.bind="name & validate" />
         </div>
-        <div class="row">
-            <div class="form-group col-md-6" validation-errors.bind="weightErrors">
-                <label class="control-label col-md-4" for="name">Waga</label>
-                <div class="col-md-8">
-                    <input type="number" name="weight" class="form-control" value.bind="person.KilogramsWeight & validate" />
-                </div>
-                <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of weightErrors">
-                    ${errorInfo.error.message}
-                </span>
-            </div>
+        <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of nameErrors">
+          ${errorInfo.error.message}
+        </span>
+      </div>
 
-            <div class="form-group col-md-6" validation-errors.bind="sexErrors">
-                <label class="control-label col-md-4" for="name">Płeć</label>
-                <div class="col-md-8">
-                    <select name="sex" class="form-control" value.bind="person.Sex & validate">
-                        <option value="MALE">Chłopiec</option>
-                        <option value="FAMALE">Dziewczynka</option>
-                    </select>
-                </div>
-                <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of sexErrors">
-                    ${errorInfo.error.message}
-                </span>
-            </div>
+      <div class="form-group col-md-6" validation-errors.bind="ageErrors">
+        <label class="control-label col-md-4" for="name">Wiek</label>
+        <div class="col-md-8">
+          <input type="number" name="age" class="form-control" value.bind="person.Age & validate" />
         </div>
-
-        <table>
-            <tr>
-                <th>File</th>
-            </tr>
-            <tr validation-errors.bind="nameErrors"
-                repeat.for="file of fileInputs">
-                <td>
-                    <span>${file.file | fileName}</span>
-                    <input type="file" files.bind="file.file | fileInput" accept=".tcx,.gpx" class="form-control" />
-                    <button class="btn btn-info" click.delegate="file.pick($event)">pick</button>
-                    <button class="btn btn-danger" click.delegate="$parent.removeFile(file)">-</button>
-                </td>
-            </tr>
-        </table>
-
-        <div class="form-inline">
-            <button class="btn btn-primary" click.delegate="addFileInput()">Dodaj plik</button>
-            <button class="btn btn-primary" click.delegate="submit()">Submit</button>
-        </div>
+        <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of ageErrors">
+          ${errorInfo.error.message}
+        </span>
+      </div>
     </div>
+    <div class="row">
+      <div class="form-group col-md-6" validation-errors.bind="weightErrors">
+        <label class="control-label col-md-4" for="name">Waga</label>
+        <div class="col-md-8">
+          <input type="number" name="weight" class="form-control" value.bind="person.KilogramsWeight & validate" />
+        </div>
+        <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of weightErrors">
+          ${errorInfo.error.message}
+        </span>
+      </div>
+
+      <div class="form-group col-md-6" validation-errors.bind="sexErrors">
+        <label class="control-label col-md-4" for="name">Płeć</label>
+        <div class="col-md-8">
+          <select name="sex" class="form-control" value.bind="person.Sex & validate">
+            <option value="MALE">Chłopiec</option>
+            <option value="FAMALE">Dziewczynka</option>
+          </select>
+        </div>
+        <span class="help-block col-md-offset-4 col-md-8" repeat.for="errorInfo of sexErrors">
+          ${errorInfo.error.message}
+        </span>
+      </div>
+    </div>
+    
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Pulse</th>
+        <td>Cadence</td>
+        <td>Distance</td>
+        <td>Altitude</td>
+        <td>dsad</td>
+      </tr>
+      <tr validation-errors.bind="nameErrors"
+          repeat.for="file of fileInputs">
+        <td>
+          <span>${file.file | fileName}</span>
+          <input type="file" files.bind="file.file | fileInput" accept=".tcx,.gpx" class="form-control" />
+          <button class="btn btn-info" click.delegate="file.pick($event)">pick</button>
+          <button class="btn btn-danger" click.delegate="$parent.removeFile(file)">-</button>
+        </td>
+        <td if.bind="file.conflicts.pulse">
+          <input type="radio" name="pulse" checked.bind="file.priority.pulse" />
+        </td>
+        <td if.bind="file.conflicts.cadence">
+          <input type="radio" name="cadence" checked.bind="file.priority.cadence" />
+        </td>
+        <td if.bind="file.conflicts.distance">
+          <input type="radio" name="distance" checked.bind="file.priority.distance" />
+        </td>
+        <td if.bind="file.conflicts.altitude">
+          <input type="radio" name="altitude" checked.bind="file.priority.altitude" />
+        </td>
+        ${file.priority}
+      </tr>
+    </table>
+
+    <div class="form-inline">
+      <button class="btn btn-primary" click.delegate="addFileInput()">Dodaj plik</button>
+      <button class="btn btn-primary" click.delegate="submit()">Submit</button>
+    </div>
+  </div>
 </template>

@@ -9,12 +9,13 @@ export class WorkoutFileUploader {
         this.eventAggregator = eventAggregator;
     }
 
-    postFileAjax(files, name, person) {
+    postFileAjax(files, name, person, priority) {
         let data = new FormData(),
             that = this,
             deferred = jQuery.Deferred();
 
         data.append("model.Name", name);
+        data.append("model.Priority", JSON.stringify(priority));
 
         for(var prop in person){
             data.append("model." + prop, person[prop]);
@@ -37,7 +38,7 @@ export class WorkoutFileUploader {
                 deferred.resolve();
             },
             error: function (xhr, status, err) {
-                deferred.reject(err);
+                deferred.reject(xhr.responseText);
             }
         });
 

@@ -7,6 +7,7 @@ using Api.Models;
 using Domain.DataFormats;
 using Domain.Mappers;
 using Domain.WorkoutMerge;
+using Domain.WorkoutMerge.Utils;
 
 namespace Api.ApplicationServices
 {
@@ -24,17 +25,19 @@ namespace Api.ApplicationServices
             if (inputsToMerge.Count < 2)
                 throw new ArgumentException("there must be atleast two inputsToMerge");
 
+            var priorityInfo = uploadModel.GetPriority();
             var separatedWorkouts = inputsToMerge.Select(n => _tcxMapper.MapToDomain(n)).ToList<Workout>();
 
             var person = uploadModel.GetPersonDomain();
-            var priority = uploadModel.GetMergePriority();
 
             List<ConflictedProperty> conflicts = new List<ConflictedProperty>();
             TrainingCenterDatabase result = null;
 
             for (var i = 1; i < separatedWorkouts.Count; ++i)
             {
-                var mergeResult = separatedWorkouts[0].Merge(separatedWorkouts[1], person);
+                var firstWorkout = GetWorkoutWithPriority(separatedWorkouts, priorityInfo, i - 1);
+                var secoendWorkout = GetWorkoutWithPriority(separatedWorkouts, priorityInfo, i);
+                var mergeResult = firstWorkout.Merge(secoendWorkout, person);
                 if (!mergeResult.IsConflicted)
                 {
                     result = _tcxMapper.ToTcx(mergeResult.Value);
@@ -52,6 +55,15 @@ namespace Api.ApplicationServices
                 return new TcxMergeResult(conflicts);
             else
                 return new TcxMergeResult(result);
+        }
+
+        private Workout GetWorkoutWithPriority(List<Workout> workouts, IEnumerable<Priority> priorityInfo, int index)
+        {
+            var workout = workouts[index];
+            var priority = priorityInfo.Single(n => n.FileIndex == index);
+            var mergePriority = MergePriorityBuilder.Create().AddProperties(priority.PriorityInfo).Build();
+            workout.DefinePriority(mergePriority);
+            return workout;
         }
 
         private List<int> GetIndexesWithDefinedProperty(string propertyName, List<Workout> workouts)

@@ -9,6 +9,8 @@ using Api.Mappers;
 using System.Text;
 using Api.Models;
 using Api.ApplicationServices;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Domain.Controllers
 {
@@ -28,6 +30,7 @@ namespace Domain.Controllers
         [HttpPost]
         public IActionResult Post(UploadFileModel model)
         {
+            var priority = JsonConvert.DeserializeObject<ICollection<Priority>>(model.Priority);
             var fileStreamReaders =
                 Request.Form.Files.Select(
                     file => new StreamReader(file.OpenReadStream()));
