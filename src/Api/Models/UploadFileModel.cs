@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FluentValidation;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -18,9 +19,11 @@ namespace Api.Models
         }
     }
 
-    public class Priority
+    public class UploadFileModelValidator : AbstractValidator<UploadFileModel>
     {
-        public int FileIndex { get; set; }
-        public IEnumerable<string> PriorityInfo { get; set; }
+        public UploadFileModelValidator()
+        {
+            RuleFor(n => n.Name).Must(n => n.Length > 3);
+        }
     }
 }

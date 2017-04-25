@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FluentValidation.AspNetCore;
+using Api.Models;
 
 namespace Api
 {
@@ -39,7 +41,9 @@ namespace Api
                 b.AddPolicy("policy", n => n.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
 
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddFluentValidation(n => n.RegisterValidatorsFromAssemblyContaining<UploadFileModel>());
 
             ConfigureDependencies(services);
         }

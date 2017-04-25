@@ -1335,36 +1335,6 @@ define('aurelia-validation/validator',["require", "exports"], function (require,
     exports.Validator = Validator;
 });
 
-define('aurelia-validation/validate-result',["require", "exports"], function (require, exports) {
-    "use strict";
-    /**
-     * The result of validating an individual validation rule.
-     */
-    var ValidateResult = (function () {
-        /**
-         * @param rule The rule associated with the result. Validator implementation specific.
-         * @param object The object that was validated.
-         * @param propertyName The name of the property that was validated.
-         * @param error The error, if the result is a validation error.
-         */
-        function ValidateResult(rule, object, propertyName, valid, message) {
-            if (message === void 0) { message = null; }
-            this.rule = rule;
-            this.object = object;
-            this.propertyName = propertyName;
-            this.valid = valid;
-            this.message = message;
-            this.id = ValidateResult.nextId++;
-        }
-        ValidateResult.prototype.toString = function () {
-            return this.valid ? 'Valid.' : this.message;
-        };
-        return ValidateResult;
-    }());
-    ValidateResult.nextId = 0;
-    exports.ValidateResult = ValidateResult;
-});
-
 define('aurelia-validation/validation-controller-factory',["require", "exports", "./validation-controller", "./validator"], function (require, exports, validation_controller_1, validator_1) {
     "use strict";
     /**
@@ -2238,8 +2208,8 @@ define('aurelia-validation/implementation/validation-rules',["require", "exports
     exports.ValidationRules = ValidationRules;
 });
 
-define('text!style/style.css', ['module'], function(module) { module.exports = "body {\r\n  background: #dbdbdb;\r\n  border-top: 3px solid #000;\r\n}\r\nbody > div {\r\n  color: #000;\r\n  background: #00ffdd;\r\n}\r\nbody input[type='file'] {\r\n  display: none!important;\r\n}\r\n"; });
 define('text!about.html', ['module'], function(module) { module.exports = "<template><h2>${title}</h2>${content}</template>"; });
+define('text!style/style.css', ['module'], function(module) { module.exports = "body {\r\n  background: #dbdbdb;\r\n  border-top: 3px solid #000;\r\n}\r\nbody > div {\r\n  color: #000;\r\n  background: #00ffdd;\r\n}\r\nbody input[type='file'] {\r\n  display: none!important;\r\n}\r\n"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"toastr/toastr.min.css\"></require><require from=\"./navigation\"></require><require from=\"./style/style.css\"></require><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\" href=\"#\">WebSiteName</a></div><navigation></navigation></div></nav><div class=\"container\"><router-view></router-view></div></template>"; });
 define('text!form.html', ['module'], function(module) { module.exports = "<template><require from=\"./value_converters/file-name-value-converter\"></require><require from=\"./value_converters/file-input-value-converter\"></require><div class=\"upload-file-cnt form-horizontal\" class.bind=\"isDragover ? 'dragover' : ''\"><div class=\"row\"><div class=\"form-group col-md-6\" validation-errors.bind=\"nameErrors\"><label class=\"control-label col-md-4\" for=\"name\">Nazwa</label><div class=\"col-md-8\"><input type=\"text\" name=\"name\" class=\"form-control\" value.bind=\"name & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of nameErrors\">${errorInfo.error.message}</span></div><div class=\"form-group col-md-6\" validation-errors.bind=\"ageErrors\"><label class=\"control-label col-md-4\" for=\"name\">Wiek</label><div class=\"col-md-8\"><input type=\"number\" name=\"age\" class=\"form-control\" value.bind=\"person.Age & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of ageErrors\">${errorInfo.error.message}</span></div></div><div class=\"row\"><div class=\"form-group col-md-6\" validation-errors.bind=\"weightErrors\"><label class=\"control-label col-md-4\" for=\"name\">Waga</label><div class=\"col-md-8\"><input type=\"number\" name=\"weight\" class=\"form-control\" value.bind=\"person.KilogramsWeight & validate\"></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of weightErrors\">${errorInfo.error.message}</span></div><div class=\"form-group col-md-6\" validation-errors.bind=\"sexErrors\"><label class=\"control-label col-md-4\" for=\"name\">Płeć</label><div class=\"col-md-8\"><select name=\"sex\" class=\"form-control\" value.bind=\"person.Sex & validate\"><option value=\"MALE\">Chłopiec</option><option value=\"FAMALE\">Dziewczynka</option></select></div><span class=\"help-block col-md-offset-4 col-md-8\" repeat.for=\"errorInfo of sexErrors\">${errorInfo.error.message}</span></div></div><table><tr><th>File</th><th>Pulse</th><td>Cadence</td><td>Distance</td><td>Altitude</td><td>dsad</td></tr><tr validation-errors.bind=\"nameErrors\" repeat.for=\"file of fileInputs\"><td><span>${file.file | fileName}</span> <input type=\"file\" files.bind=\"file.file | fileInput\" accept=\".tcx,.gpx\" class=\"form-control\"> <button class=\"btn btn-info\" click.delegate=\"file.pick($event)\">pick</button> <button class=\"btn btn-danger\" click.delegate=\"$parent.removeFile(file)\">-</button></td><td if.bind=\"file.conflicts.pulse\"><input type=\"radio\" name=\"pulse\" checked.bind=\"file.priority.pulse\"></td><td if.bind=\"file.conflicts.cadence\"><input type=\"radio\" name=\"cadence\" checked.bind=\"file.priority.cadence\"></td><td if.bind=\"file.conflicts.distance\"><input type=\"radio\" name=\"distance\" checked.bind=\"file.priority.distance\"></td><td if.bind=\"file.conflicts.altitude\"><input type=\"radio\" name=\"altitude\" checked.bind=\"file.priority.altitude\"></td>${file.priority}</tr></table><div class=\"form-inline\"><button class=\"btn btn-primary\" click.delegate=\"addFileInput()\">Dodaj plik</button> <button class=\"btn btn-primary\" click.delegate=\"submit()\">Submit</button></div></div></template>"; });
 define('text!home.html', ['module'], function(module) { module.exports = "<template><h2>Hello</h2></template>"; });

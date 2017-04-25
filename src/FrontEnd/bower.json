@@ -5,7 +5,7 @@
   "authors": [
     "Piotr Bujok <p.bujok@gmail.com>"
   ],
-  "license": "MIT",
+  "license": "GPL",
   "homepage": "https://github.com/pbujok/workoutcombiner",
   "ignore": [
     "**/.*",
