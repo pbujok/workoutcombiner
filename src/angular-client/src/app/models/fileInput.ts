@@ -1,11 +1,11 @@
 ﻿import { WorkoutAttributes } from './workoutAttributes';
 export class FileInput {
-    public conflicts: WorkoutAttributes;
+    public conflicts: WorkoutAttributes<boolean>;
     public file: any;
     public index: number
 
     constructor() {
-        this.conflicts = new WorkoutAttributes(false, false, false, false);
+        this.conflicts = new WorkoutAttributes<boolean>(false, false, false, false, false);
     }
 
     addConflictedProperty(propertyName) {

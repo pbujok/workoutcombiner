@@ -12,10 +12,10 @@ import * as FileSaver from 'file-saver';
     styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-    person: Person;
-    name: string;
-    fileInputs: FileInput[];
-    priority: WorkoutAttributes;
+    public person: Person;
+    public name: string;
+    public fileInputs: FileInput[];
+    public priority: WorkoutAttributes<boolean>;
 
     constructor(private apiService: ApiService) {
     }
@@ -23,7 +23,7 @@ export class FormComponent implements OnInit {
     ngOnInit() {
         this.person = new Person("MALE", 75, 25);
         this.name = "Combined workout";
-        this.priority = new WorkoutAttributes(null, null, null, null);
+        this.priority = new WorkoutAttributes<boolean>(null, null, null, null, null);
         this.fileInputs = [];
     }
 
@@ -76,16 +76,17 @@ export class FormComponent implements OnInit {
     }
 
     private constructPriorityInfo() {
-        let file,
+        let i = 0,
+            filesCount = this.fileInputs.length,
             result = [],
-            priorityInfo = [];
-        for (var i in this.fileInputs) {
+            p;
+        for (; i < filesCount; ++i) {
             result.push({ FileIndex: i, PriorityInfo: [] });
         }
 
-        for (let p in this.priority) {
+        for (p in this.priority) {
             let fileIndex = this.priority[p];
-            if (fileIndex != null) {
+            if (typeof (fileIndex) !== 'function' && fileIndex !== this.priority.defaultValue) {
                 let intIndex = parseInt(fileIndex);
                 result[intIndex].PriorityInfo.push(p);
             }

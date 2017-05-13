@@ -10,7 +10,7 @@ import { WorkoutAttributes } from '../models/workoutAttributes';
 export class FileInputComponent {
     @ViewChild('fileInput') fileInput: ElementRef;
     @Input() file: FileInput;
-    @Input() priority: WorkoutAttributes;
+    @Input() priority: WorkoutAttributes<number>;
     @Output() removeing: EventEmitter<FileInput> = new EventEmitter<FileInput>();
 
 
