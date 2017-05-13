@@ -1,0 +1,50 @@
+﻿<div class="upload-file-cnt form-horizontal" class.bind="isDragover ? 'dragover' : ''">
+  <div class="row">
+    <div class="form-group col-md-6" validation-errors.bind="nameErrors">
+      <label class="control-label col-md-4" for="name">Nazwa</label>
+      <div class="col-md-8">
+        <input type="text" name="name" class="form-control" [(ngModel)]="name" />
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label class="control-label col-md-4" for="name">Wiek</label>
+      <div class="col-md-8">
+        <input type="number" name="age" class="form-control" [(ngModel)]="person.age" />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label class="control-label col-md-4" for="name">Waga</label>
+      <div class="col-md-8">
+        <input type="number" name="weight" class="form-control" [(ngModel)]="person.kilogramsWeight" />
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label class="control-label col-md-4" for="name">Płeć</label>
+      <div class="col-md-8">
+        <select name="sex" class="form-control" [(ngModel)]="person.sex">
+          <option value="MALE">Chłopiec</option>
+          <option value="FAMALE">Dziewczynka</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <table>
+    <tr>
+      <th>File</th>
+      <th><span *ngIf="hasAnyConflict('pulse')">Pulse</span></th>
+      <td><span *ngIf="hasAnyConflict('cadence')">Cadence</span></td>
+      <td><span *ngIf="hasAnyConflict('distance')">Distance</span></td>
+      <td><span *ngIf="hasAnyConflict('altitude')">Altitude</span></td>
+    </tr>
+    <file-input *ngFor="let fileInput of fileInputs" [file]="fileInput" [priority] ="priority" (removeing)="removeFileInput($event)"></file-input>
+  </table>
+
+  <div class="form-inline">
+    <button class="btn btn-primary" (click)="addFileInput()">Dodaj plik</button>
+    <button class="btn btn-primary" (click)="submit()">Submit</button>
+  </div>
+</div>

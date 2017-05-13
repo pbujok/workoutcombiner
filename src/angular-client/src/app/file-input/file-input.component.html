@@ -1,0 +1,26 @@
+﻿<td>
+  <span *ngIf="file.file">{{file.file.name}}</span>
+  <input #fileInput type="file" ngModel (change)="getFiles($event)" accept=".tcx,.gpx" class="form-control file-input" />
+  <button class="btn btn-info" (click)="pick()">pick</button>
+  <button class="btn btn-danger" (click)="remove()">-</button>
+</td>
+<td>
+  <span *ngIf="file.conflicts.pulse">
+    <input type="radio" name="pulse" [(ngModel)]="priority.pulse" [value]="file.index"/>
+  </span>
+</td>
+<td>
+  <span *ngIf="file.conflicts.cadence">
+    <input type="radio" name="cadence" [(ngModel)]="priority.cadence" [value]="file.index"/>
+  </span>
+</td>
+<td>
+  <span *ngIf="file.conflicts.distance">
+    <input type="radio" name="distance" [(ngModel)]="priority.distance" [value]="file.index" />
+  </span>
+</td>
+<td>
+  <span *ngIf="file.conflicts.altitude">
+    <input type="radio" name="altitude" [(ngModel)]="priority.altitude" [value]="file.index"/>
+  </span>
+</td>
