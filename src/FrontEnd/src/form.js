@@ -2,7 +2,6 @@
 import { ValidationController, ValidationRules, validateTrigger } from 'aurelia-validation';
 import { HttpClient, json } from 'aurelia-fetch-client';
 import { WorkoutFileUploader } from 'helpers/workout-file-uploader';
-import { InputDataFileSpecification } from 'helpers/input-data-file-specification';
 import * as toastr from 'toastr/toastr';
 
 class WorkoutAttributes {
@@ -103,32 +102,6 @@ export class Form {
 
     _defineValidationRules() {
         this._controller.validateTrigger = validateTrigger.blur;
-    }
-
-    _dropFileHandler(e) {
-        e.preventDefault();
-        if (e.originalEvent && e.originalEvent.dataTransfer) {
-            let fileSpecification = new InputDataFileSpecification();
-            for (let file in e.originalEvent.dataTransfer.files) {
-                file = e.originalEvent.dataTransfer.files[file];
-                if (fileSpecification.isSatifiedBy(file)) {
-                    this.fileInputs
-                        .push(new FileInput(file));
-                }
-            }
-        }
-    }
-
-    _initDropTarget() {
-        let that = this;
-        $(document).on('drag dragstart dragend dragover dragenter dragleave drop',
-            '.upload-file-cnt', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            })
-            .on('dragover dragenter', '.upload-file-cnt', () => that.isDragover = true)
-            .on('dragleave dragend drop', '.upload-file-cnt', () => that.isDragover = false)
-            .on('drop', '.upload-file-cnt', this._dropFileHandler.bind(this));
     }
 }
 

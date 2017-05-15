@@ -32,17 +32,18 @@
       </div>
     </div>
   </div>
-  <table>
-    <tr>
-      <th>File</th>
-      <th><span *ngIf="hasAnyConflict('pulse')">Pulse</span></th>
-      <td><span *ngIf="hasAnyConflict('cadence')">Cadence</span></td>
-      <td><span *ngIf="hasAnyConflict('distance')">Distance</span></td>
-      <td><span *ngIf="hasAnyConflict('altitude')">Altitude</span></td>
-    </tr>
-    <file-input *ngFor="let fileInput of fileInputs" [file]="fileInput" [priority] ="priority" (removeing)="removeFileInput($event)"></file-input>
-  </table>
-
+  <div class="row" fileDnd (fileDrop)="addFile($event)">
+    <table>
+      <tr>
+        <th>File</th>
+        <th><span *ngIf="hasAnyConflict('pulse')">Pulse</span></th>
+        <td><span *ngIf="hasAnyConflict('cadence')">Cadence</span></td>
+        <td><span *ngIf="hasAnyConflict('distance')">Distance</span></td>
+        <td><span *ngIf="hasAnyConflict('altitude')">Altitude</span></td>
+      </tr>
+      <file-input *ngFor="let fileInput of fileInputs" [file]="fileInput" [priority]="priority" (removeing)="removeFileInput($event)"></file-input>
+    </table>
+  </div>
   <div class="form-inline">
     <button class="btn btn-primary" (click)="addFileInput()">Dodaj plik</button>
     <button class="btn btn-primary" (click)="submit()">Submit</button>

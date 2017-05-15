@@ -5,6 +5,7 @@ import { ApiService } from '../api.service';
 import { Response } from '@angular/http';
 import { WorkoutAttributes } from '../models/workoutAttributes';
 import * as FileSaver from 'file-saver';
+import { DragAndDropFileDirective } from '../dragAndDropFileDirective';
 
 @Component({
     selector: 'upload-form',
@@ -28,8 +29,15 @@ export class FormComponent implements OnInit {
     }
 
     addFileInput() {
+        this.addFile(null);   
+    }
+
+    addFile(file: File) {
         let fileinput = new FileInput();
         fileinput.index = this.fileInputs.length;
+        if (file !== null) {
+            fileinput.file = file;
+        }
         this.fileInputs.push(fileinput);
     }
 

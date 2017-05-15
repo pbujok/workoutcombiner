@@ -8,12 +8,14 @@ import { ApiService } from './api.service';
 import { ConfigurationService } from './configuration.service';
 import { FormComponent } from './form/form.component';
 import { FileInputComponent } from './file-input/file-input.component';
+import { DragAndDropFileDirective } from './dragAndDropFileDirective';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    FileInputComponent
+    FileInputComponent,
+    DragAndDropFileDirective
   ],
   imports: [
     BrowserModule,

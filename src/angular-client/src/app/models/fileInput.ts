@@ -6,7 +6,7 @@ export class FileInput {
 
     constructor() {
         this.conflicts = new WorkoutAttributes<boolean>(false, false, false, false, false);
-    }
+    }    
 
     addConflictedProperty(propertyName) {
         this.conflicts[propertyName.toLowerCase()] = true
